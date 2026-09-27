@@ -19,7 +19,7 @@ import bisect
 
 # from atcoder.fenwicktree import FenwickTree
 # import copy
-# from heapq import heappush, heappop, heappush, heapify
+from heapq import heappush, heappop, heappush, heapify
 
 dr = [
     (0, -1),
