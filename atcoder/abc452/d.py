@@ -2,7 +2,7 @@ import sys
 
 sys.setrecursionlimit(10**7)
 
-from collections import deque
+# from collections import deque
 # from functools import cmp_to_key
 from collections import defaultdict
 import bisect
@@ -19,7 +19,7 @@ import bisect
 
 # from atcoder.fenwicktree import FenwickTree
 # import copy
-from heapq import heappush, heappop, heappush, heapify
+# from heapq import heappush, heappop, heappush, heapify
 
 dr = [
     (0, -1),
@@ -44,32 +44,27 @@ def ilist():
 S = list(input())
 T = list(input())
 
-N = len(S)
+ls = len(S)
+lt = len(T)
 
-# 文字ごとに出現位置を保存
-pos = [[] for _ in range(26)]
+so = defaultdict(list)
 
-for i, c in enumerate(S):
-    pos[ord(c) - ord('a')].append(i)
-
+for i in range(ls):
+    so[S[i]].append(i)
 ans = 0
+for i in range(ls):
+    target = i - 1
 
-# 左端を固定
-for l in range(N):
-    r = l - 1  # 最初は開始位置の1つ前
+    for j in range(lt):
+        t = T[j]
+        tp = bisect.bisect_right(so[t], target)
 
-    for c in T:
-        indices = pos[ord(c) - ord('a')]
-
-        # rより後ろの位置を探す
-        i = bisect.bisect_right(indices, r)
-
-        if i == len(indices):
-            r = N
+        if tp == len(so[t]):
+            target = ls
             break
 
-        r = indices[i]
+        target = so[t][tp]
 
-    ans += r - l
+    ans += target - i
 
 print(ans)
