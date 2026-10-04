@@ -44,18 +44,22 @@ def ilist():
 N, K = imap()
 A = ilist()
 AS = sorted(A)
-mini = 10**15
-maxi = -1
+
+l = 0
+
 for i in range(N):
     if A[i] != AS[i]:
-        mini = min(mini, i)
-        maxi = max(maxi, i)
+        break
+    l += 1
 
-if mini == 10**15:
-    print("Yes")
-    exit()
+r = 0
 
-if maxi - mini + 1 <= K:
+for i in range(N - 1, -1, -1):
+    if A[i] != AS[i]:
+        break
+    r += 1
+
+if l + r + K >= N:
     print("Yes")
 else:
     print("No")

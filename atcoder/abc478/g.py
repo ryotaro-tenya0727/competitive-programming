@@ -39,33 +39,3 @@ def imap():
 
 def ilist():
     return list(map(int, input().split()))
-
-
-N, Q = imap()
-events = [[] for _ in range(N + 1)]
-
-for _ in range(Q):
-    l, r, x = map(int, input().split())
-    l -= 1
-
-    events[l].append((x, 1))  # この位置からxの区間が始まる
-    events[r].append((x, -1))  # この位置からxの区間がなくなる
-
-cnt = [0] * (Q + 1)
-num = 0
-ans = []
-
-for i in range(N):
-    for x, s in events[i]:
-        if s == 1:
-            cnt[x] += 1
-            if cnt[x] == 1:
-                num += 1
-        else:
-            cnt[x] -= 1
-            if cnt[x] == 0:
-                num -= 1
-
-    ans.append(num)
-
-print(*ans)
