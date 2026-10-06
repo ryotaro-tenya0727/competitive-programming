@@ -41,25 +41,27 @@ def ilist():
     return list(map(int, input().split()))
 
 
-N, K = imap()
-A = ilist()
-AS = sorted(A)
+Q = int(input())
+S = list(input())
+T = list(input())
 
-l = 0
+ls = len(S)
+lt = len(T)
+ar = []
+for i in range(ls - lt + 1):
+    if S[i:i + lt] == T:
+        ar.append(i)
+lar = len(ar)
+for i in range(Q):
+    l, r = imap()
+    l -= 1
+    r -= 1
+    if len(ar) == 0:
+        print("No")
+        continue
 
-for i in range(N):
-    if A[i] != AS[i]:
-        break
-    l += 1
-
-r = 0
-
-for i in range(N - 1, -1, -1):
-    if A[i] != AS[i]:
-        break
-    r += 1
-
-if l + r + K >= N:
-    print("Yes")
-else:
-    print("No")
+    t = bisect_left(ar, l)
+    if t < lar and ar[t] + lt - 1 <= r:
+        print("Yes")
+    else:
+        print("No")
