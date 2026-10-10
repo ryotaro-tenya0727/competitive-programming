@@ -43,18 +43,20 @@ def ilist():
 
 N, Q = imap()
 P = ilist()
-a = [int(input()) for i in range(Q)]
+A = [int(input()) for i in range(Q)]
+sta = set(A)
+not_a_in_p = [p for p in P if not p in sta]
+# print("not_a_in_p", not_a_in_p)
+# print(not_a_in_p + sorted(set(A), key=A.index))
+sa = set()
+t = []
 
-sta = set(a)
-br = [v for v in P if not v in sta]
+for i in range(Q - 1, -1, -1):
 
-stbk = set()
-ansbk = []
-for v in reversed(a):
-    if v in stbk:
+    if A[i] in sa:
         continue
     else:
-        ansbk.append(v)
-        stbk.add(v)
+        sa.add(A[i])
+        t.append(A[i])
 
-print(*(br + list(reversed(ansbk))))
+print(*(not_a_in_p + list(reversed(t))))

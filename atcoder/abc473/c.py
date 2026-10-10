@@ -41,27 +41,16 @@ def ilist():
     return list(map(int, input().split()))
 
 
-N, S, L = imap()
+N, K = imap()
 A = ilist()
-S -= 1
+cnt = defaultdict(int)
+for a in A:
+    cnt[a] += 1
 
-# position[i]: 街0を位置0としたときの、街iの位置
-position = [0]
-for distance in A:
-    position.append(position[-1] + distance)
+maxcnt = max(cnt.values())
 
-ans = 0
+targets = sorted(cnt.values())
 
-for left in range(S + 1):
-    left_distance = position[S] - position[left]
+t = bisect_left(targets, maxcnt - 1)
 
-    for right in range(S, N):
-        right_distance = position[right] - position[S]
-
-        left_first = left_distance * 2 + right_distance
-        right_first = left_distance + right_distance * 2
-
-        if min(left_first, right_first) <= L:
-            ans = max(ans, right - left + 1)
-
-print(ans)
+print(len(targets) - t)

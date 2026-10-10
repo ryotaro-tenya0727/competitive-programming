@@ -41,27 +41,22 @@ def ilist():
     return list(map(int, input().split()))
 
 
-N, S, L = imap()
+N, M, K = imap()
 A = ilist()
-S -= 1
+total = 0
+eat = [False for i in range(N)]
+ans = [False for i in range(N)]
+for i in range(N):
+    if i >= M:
+        if eat[i - M]:
+            total -= A[i - M]
+    if total + A[i] <= K:
+        total += A[i]
+        ans[i] = True
+        eat[i] = True
 
-# position[i]: 街0を位置0としたときの、街iの位置
-position = [0]
-for distance in A:
-    position.append(position[-1] + distance)
-
-ans = 0
-
-for left in range(S + 1):
-    left_distance = position[S] - position[left]
-
-    for right in range(S, N):
-        right_distance = position[right] - position[S]
-
-        left_first = left_distance * 2 + right_distance
-        right_first = left_distance + right_distance * 2
-
-        if min(left_first, right_first) <= L:
-            ans = max(ans, right - left + 1)
-
-print(ans)
+for v in ans:
+    if v:
+        print("Yes")
+    else:
+        print("No")
