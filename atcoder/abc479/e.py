@@ -51,43 +51,36 @@ for i in range(1, N):
     graph[a].append((b, i))
     graph[b].append((a, i))
 
-parent = [-1] * N
-parent_edge = [0] * N  # parent_edge[v]: vと親を結ぶ辺の番号
-parent[0] = 0
-
+# 1組の意味：(頂点, 親, 親との辺番号)
+q = deque([(0, -1, 0)])
 order = []
-q = deque([0])
 
 while q:
-    v = q.popleft()
-    order.append(v)
+    v, parent, edge_id = q.popleft()
+    order.append((v, parent, edge_id))
 
     for to, i in graph[v]:
-        if to == parent[v]:
-            continue
-        parent[to] = v
-        parent_edge[to] = i
-        q.append(to)
+        if to != parent:
+            q.append((to, v, i))
 
 size = [1] * N
 add = [0] * N
 
-# 子から親へ。人数を数えながら、その辺の加算も記録する
-for v in reversed(order[1:]):
+# 子から親へ
+for v, parent, edge_id in reversed(order[1:]):
     below = size[v]
     above = N - below
-    i = parent_edge[v]
 
     if below > above:
-        add[v] += i
+        add[v] += edge_id
     else:
-        add[0] += i
-        add[v] -= i
+        add[0] += edge_id
+        add[v] -= edge_id
 
-    size[parent[v]] += size[v]
+    size[parent] += below
 
-# 親から子へ。記録を反映する
-for v in order[1:]:
-    add[v] += add[parent[v]]
+# 親から子へ
+for v, parent, edge_id in order[1:]:
+    add[v] += add[parent]
 
 print(*add)
