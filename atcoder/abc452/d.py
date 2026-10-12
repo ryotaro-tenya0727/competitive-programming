@@ -65,6 +65,6 @@ for i in range(ls):
 
         target = so[t][tp]
 
-    ans += target - i
+    ans += target - 1 - i + 1
 
 print(ans)
