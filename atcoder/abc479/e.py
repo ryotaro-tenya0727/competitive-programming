@@ -42,42 +42,72 @@ def ilist():
 
 
 N = int(input())
+G = [[] for _ in range(N)]
+edges = []
 
-graph = [[] for _ in range(N)]
-
-for i in range(1, N):
-    a, b = map(int, input().split())
+for _ in range(N - 1):
+    a, b = imap()
     a -= 1
     b -= 1
-    graph[a].append((b, i))
-    graph[b].append((a, i))
 
-# (頂点, 親, 親と結ぶ辺番号)
-order = [(0, -1, 0)]
+    edges.append((a, b))
+    G[a].append(b)
+    G[b].append(a)
 
-for v, p, _ in order:
-    for nv, i in graph[v]:
-        if nv != p:
-            order.append((nv, v, i))
+tin = [0] * N
+tout = [0] * N
+tour = []
 
-# 部分木サイズ
-size = [1] * N
 
-for v, p, i in reversed(order[1:]):
-    size[p] += size[v]
+def dfs(v, parent):
+    tin[v] = len(tour)
+    tour.append(v)
 
-# 加算を記録
-ans = [0] * N
+    for to in G[v]:
+        if to == parent:
+            continue
+        dfs(to, v)
 
-for v, p, i in order[1:]:
-    if 2 * size[v] > N:
-        ans[v] += i
+    tout[v] = len(tour)
+
+
+dfs(0, -1)
+
+# tour 上の区間加算を記録する差分配列
+diff = [0] * (N + 1)
+
+
+def add(left, right, value):
+    # tour[left:right] の全頂点に value を加える
+    diff[left] += value
+    diff[right] -= value
+
+
+for i, (a, b) in enumerate(edges, start=1):
+    # 辺の両端のうち、どちらが子かを決める
+    child = a if tin[a] > tin[b] else b
+
+    left = tin[child]
+    right = tout[child]
+
+    child_count = right - left
+    other_count = N - child_count
+
+    if child_count > other_count:
+        # 子の部分木側が多い
+        add(left, right, i)
     else:
-        ans[0] += i
-        ans[v] -= i
+        # 子の部分木以外が多い
+        add(0, left, i)
+        add(right, N, i)
 
-# 親から子へ加算を伝える
-for v, p, i in order[1:]:
-    ans[v] += ans[p]
+# 累積和で tour 上の各位置の値を求める
+# ans は元の頂点番号順に戻す
+ans = [0] * N
+current = 0
+
+for pos, v in enumerate(tour):
+    current += diff[pos]
+    ans[v] = current
 
 print(*ans)
