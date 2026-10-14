@@ -114,9 +114,9 @@
 
 #         return self.fact[n] * inverse % self.mod
 
-comb = Comb(N)
+# comb = Comb(N)
 
-print(comb.ncr(N, K))
+# print(comb.ncr(N, K))
 
 # 出力高速化
 # sys.stdout.write("\n".join(" ".join(map(str, v)) for v in ans) + "\n")
@@ -152,3 +152,49 @@ print(comb.ncr(N, K))
 #     print("Yes")
 # else:
 #     print("No")
+
+### 逆元 シンプル版 O(N log MOD)
+
+# MOD = 998244353
+
+# inv = [0] * (N + 1)
+
+# for i in range(1, N + 1):
+#     inv[i] = pow(i, -1, MOD)
+
+### 逆元 高速版 （O(N)）
+
+# MOD = 998244353
+
+# inv = [0] * (N + 1)
+# inv[1] = 1
+
+# for i in range(2, N + 1):
+#     inv[i] = MOD - (MOD // i) * inv[MOD % i] % MOD
+
+### 逆元計算れい
+
+# MOD = 13
+
+# # 5C2
+# numerator = 120
+# denominator = 12
+
+# ans = numerator * pow(denominator, -1, MOD) % MOD
+
+# print(ans)
+
+### 逆元 解説
+
+# 例えば、
+# \[
+# \frac{A}{B}\pmod P
+# \]
+
+# を計算したいなら、
+# ans = A * pow(B, -1, P) % P
+
+# とする。（B と P が互いに素であることが条件）
+# 覚えることは1つだけ。
+# 「modを取りながら割り算したい → 逆元を掛ける」
+# これでOK！

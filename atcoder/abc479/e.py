@@ -42,6 +42,7 @@ def ilist():
 
 
 N = int(input())
+
 graph = [[] for _ in range(N)]
 
 for i in range(1, N):
@@ -51,36 +52,32 @@ for i in range(1, N):
     graph[a].append((b, i))
     graph[b].append((a, i))
 
-# 1組の意味：(頂点, 親, 親との辺番号)
-q = deque([(0, -1, 0)])
-order = []
+# (頂点, 親, 親と結ぶ辺番号)
+order = [(0, -1, 0)]
 
-while q:
-    v, parent, edge_id = q.popleft()
-    order.append((v, parent, edge_id))
+for v, p, _ in order:
+    for nv, i in graph[v]:
+        if nv != p:
+            order.append((nv, v, i))
 
-    for to, i in graph[v]:
-        if to != parent:
-            q.append((to, v, i))
-
+# 部分木サイズ
 size = [1] * N
-add = [0] * N
 
-# 子から親へ
-for v, parent, edge_id in reversed(order[1:]):
-    below = size[v]
-    above = N - below
+for v, p, i in reversed(order[1:]):
+    size[p] += size[v]
 
-    if below > above:
-        add[v] += edge_id
+# 加算を記録
+ans = [0] * N
+
+for v, p, i in order[1:]:
+    if 2 * size[v] > N:
+        ans[v] += i
     else:
-        add[0] += edge_id
-        add[v] -= edge_id
+        ans[0] += i
+        ans[v] -= i
 
-    size[parent] += below
+# 親から子へ加算を伝える
+for v, p, i in order[1:]:
+    ans[v] += ans[p]
 
-# 親から子へ
-for v, parent, edge_id in order[1:]:
-    add[v] += add[parent]
-
-print(*add)
+print(*ans)
