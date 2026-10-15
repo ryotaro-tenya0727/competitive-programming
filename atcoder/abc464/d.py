@@ -43,34 +43,35 @@ def ilist():
 
 T = int(input())
 
-for i in range(T):
+for _ in range(T):
     N = int(input())
-    S = list(input())
-    X = ilist()
-    Y = ilist()
-    ans = 0
+    S = input().strip()
+    X = list(map(int, input().split()))
+    Y = list(map(int, input().split()))
+
+    # p[i]: S[i], S[i+1]を「RS」にする利益
     p = []
     for i in range(N - 1):
-        t = 0
+        gain = Y[i]
+
         if S[i] != "R":
-            t -= X[i]
+            gain -= X[i]
         if S[i + 1] != "S":
-            t -= X[i + 1]
+            gain -= X[i + 1]
 
-        t += Y[i]
-        p.append(t)
+        p.append(gain)
 
-    dp = [0 for k in range(N - 1)]
-    dp[0] = max(p[0], 0)
-    ans = dp[0]
-    if len(dp) >= 2:
-        dp[1] = max(p[1], 0, p[0])
-        ans = max(ans, dp[1])
+    # dp[i]: ペア0〜iまで考えたときの最大値
+    dp = [0] * (N - 1)
+    dp[0] = max(0, p[0])
 
-    for j in range(2, N - 1):
-        pl = max(p[j], 0)
-        # print("pl", pl)
-        dp[j] = max(dp[j - 2] + pl, 0, dp[j - 1])
-        ans = max(ans, dp[j])
+    for i in range(1, N - 1):
+        # ペアiを選ぶ
+        take = p[i]
+        if i >= 2:
+            take += dp[i - 2]
 
-    print(ans)
+        # ペアiを選ばない場合と比較
+        dp[i] = max(dp[i - 1], take)
+
+    print(dp[-1])
