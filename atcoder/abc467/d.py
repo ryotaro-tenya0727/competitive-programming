@@ -42,26 +42,21 @@ def ilist():
 
 
 N, M = imap()
-xst = [set() for i in range(N)]
-yst = [set() for i in range(N)]
+R = [0 for i in range(N)]
+C = [0 for i in range(N)]
 
+t = []
 for i in range(M):
     r, c = imap()
     r -= 1
     c -= 1
-
-    for yv in xst[r]:
-        if r in yst[yv]:
-            yst[yv].remove(r)
-    xst[r].clear()
-    for xv in yst[c]:
-        if c in xst[xv]:
-            xst[xv].remove(c)
-    yst[c].clear()
-    xst[r].add(c)
-    yst[c].add(r)
+    R[r] = i
+    C[c] = i
+    t.append((r, c))
 ans = 0
-for k in xst:
-    ans += len(k)
+for i, (r, c) in enumerate(t):
+
+    if R[r] == i and C[c] == i:
+        ans += 1
 
 print(ans)
