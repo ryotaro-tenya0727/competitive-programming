@@ -47,26 +47,16 @@ def ilist():
 N, K, T = imap()
 A = ilist()
 A.sort()
-ans = 1
-start = 0
-if A[0] == 0:
-    ans = 0
-    start = 1
-now = K
-for i in range(start, N):
-    if A[i] >= T:
-        break
-    if now >= A[i]:
-        now = max(now, A[i] + K)
-        continue
+while A and A[-1] > T:
+    A.pop()
+A.append(T)
 
-    cnt = (A[i] - now) // K
-    if (A[i] - now) % K != 0:
-        cnt += 1
-    ans += cnt
-    now = max(A[i] + K, now + cnt * K)
+la = len(A)
+ans = 0
+r = 0
+for i in range(la):
+    if r < A[i]:
+        ans += (A[i] - r + K - 1) // K
+    r = A[i] + K
 
-ans += ((T - (now)) // K)
-if (T - now) % K != 0:
-    ans += 1
 print(ans)
