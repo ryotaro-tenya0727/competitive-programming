@@ -43,37 +43,27 @@ def ilist():
 
 N, K = imap()
 ar = []
-
-for i in range(N):
-    l, r = imap()
-    ar.append((l, r))
-
-ar = sorted(ar, key=lambda x: x[1])
-
-S = []
 now = -10**15
 for i in range(N):
-    l, r = ar[i]
-    if now < l:
-        S.append((l, r))
-        now = r
+    l, r = imap()
 
-if len(S) < K:
-    print(-1)
-    exit()
+    ar.append((l, r))
+ar = sorted(ar, key=lambda x: x[1])
+
+now = -1
 
 ok = -1
-ng = 10**10
+ng = 10**15
 
 
 def check(x):
 
-    now = -10**15
     cur = 0
-    for j in range(N):
-        l, r = ar[j]
 
-        if now + x <= l:
+    now = -10**15
+    for i in range(N):
+        l, r = ar[i]
+        if now < l and l - now >= x:
             cur += 1
             now = r
 

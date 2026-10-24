@@ -44,16 +44,17 @@ def ilist():
 S = list(input())
 ls = len(S)
 ans = 0
-for k in range(2):
-    for i in range(ls):
-        l, r = i, i + k
-        t = 0
-        while 0 <= l and r <= ls - 1:
-            if S[l] != S[r]:
-                t += 1
-            if t == 2:
-                break
 
+for i in range(ls):
+    for j in range(2):
+        l, r = i, i + j
+        cur = 0
+        while 0 <= l <= ls - 1 and 0 <= r <= ls - 1:
+            if S[l] != S[r]:
+                cur += 1
+
+            if cur == 2:
+                break
             ans += 1
             l -= 1
             r += 1
