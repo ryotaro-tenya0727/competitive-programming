@@ -46,17 +46,16 @@ def ilist():
 
 N, K, T = imap()
 A = ilist()
-A.sort()
-while A and A[-1] > T:
-    A.pop()
 A.append(T)
-
-la = len(A)
+A.sort()
+while len(A) and A[-1] > T:
+    A.pop()
+now = 0
 ans = 0
-r = 0
-for i in range(la):
-    if r < A[i]:
-        ans += (A[i] - r + K - 1) // K
-    r = A[i] + K
+for i in range(len(A)):
+    if now < A[i]:
+        ans += (A[i] - now + K - 1) // K
+
+    now = A[i] + K
 
 print(ans)
