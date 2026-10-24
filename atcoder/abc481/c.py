@@ -45,18 +45,15 @@ def ilist():
 
 Q = int(input())
 
-a = [i for i in range(1, 2 * 10**6)]
-
-heapify(a)
-used = defaultdict(bool)
-name_to_id = defaultdict(int)
+name_id = {}
+idmax = 0
 for i in range(Q):
     s = input()
-    if used[s]:
-        print(name_to_id[s])
-        continue
-    t = heappop(a)
-    used[s] = True
 
-    name_to_id[s] = t
-    print(t)
+    if s in name_id:
+        print(name_id[s])
+        continue
+
+    idmax += 1
+    name_id[s] = idmax
+    print(idmax)

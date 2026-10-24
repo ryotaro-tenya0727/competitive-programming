@@ -54,65 +54,34 @@ for i in range(M):
     g[a].add(b)
 
 newg = [[] for i in range(N)]
+
 for i in range(N):
-    lg = len(g[i])
-    for j in range(lg):
-        if j == 0:
-            newg[i].append((g[i][j], 0))
+    if not g[i]:
+        continue
+
+    min_to = min(g[i])
+
+    for v in g[i]:
+        if v == min_to:
+            newg[i].append((v, 0))
         else:
-            newg[i].append((g[i][j], 1))
+            newg[i].append((v, 1))
 
 S -= 1
 T -= 1
+dq = deque([(S, 0)])
+dist = [10**15 for i in range(N)]
+while dq:
+    now, cost = dq.popleft()
 
-
-def dijkstra(graph, start):
-    # 初期化
-    n = len(graph)
-    visited = [False] * n
-    distance = [sys.maxsize] * n
-    distance[start] = 0
-    pq = [(0, start)]
-
-    while pq:
-        dist, u = heapq.heappop(pq)
-        if visited[u]:
+    for v, v_cost in newg[now]:
+        newcost = cost + v_cost
+        if newcost >= dist[v]:
             continue
+        dist[v] = newcost
+        if v_cost == 0:
+            dq.appendleft((v, newcost))
+        else:
+            dq.append((v, newcost))
 
-        visited[u] = True
-
-        for v, weight in graph[u]:
-            if not visited[v]:
-                new_distance = distance[u] + weight
-                if new_distance < distance[v]:
-                    distance[v] = new_distance
-                    heapq.heappush(pq, (new_distance, v))
-
-    return distance
-
-
-t = dijkstra(newg, S)
-
-print(-1 if t[T] == sys.maxsize else t[T])
-
-# dq = deque()
-# dq.append((S, 0))
-
-# re = [False for i in range(N)]
-# re[S] = True
-# ans = 10**15
-# print(newg)
-# while dq:
-#     now, cost = dq.popleft()
-
-#     for v, new_cost in newg[now]:
-#         if v == T:
-#             ans = min(ans, cost + new_cost)
-#             continue
-#         if re[v]:
-#             continue
-
-#         re[v] = True
-#         dq.append((v, cost + new_cost))
-
-# print(-1 if ans == 10**15 else ans)
+print(dist[T] if dist[T] != 10**15 else -1)
