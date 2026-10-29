@@ -6,6 +6,23 @@
 from lib import Comb, EulerTour, dijkstra, run_length_encode
 ```
 
+## 偏角ソート: `angle_sort.py`
+
+原点から見た角度で、右方向（正の x 軸）を始点に反時計回りに並べる。同じ方向では原点に近い順で、原点 `(0, 0)` は先頭に置く。元のリストは変更しない。`is_same_dir(a, b)` は原点から見て同じ方向か判定し、どちらかが原点なら `False` を返す。
+
+```python
+from lib.angle_sort import angle_sort, is_same_dir
+
+points = [(0, -1), (-1, 0), (0, 0), (2, 0), (1, 0), (0, 1)]
+assert angle_sort(points) == [
+    (0, 0), (1, 0), (2, 0), (0, 1), (-1, 0), (0, -1)
+]
+assert is_same_dir((1, 1), (2, 2))
+assert not is_same_dir((0, 0), (1, 1))
+```
+
+AtCoder ABC481 E での使用例は [`angle_sort_exmpple.py`](angle_sort_exmpple.py) にある。
+
 ## ランレングス圧縮: `run_length.py`
 
 文字列と整数列のどちらにも使える。**連続している**同じ値だけを `(値, 個数)` にまとめるため、離れた位置の同じ値は別の組になる。元メモの string / int の 2 例は同じ関数で扱える。
