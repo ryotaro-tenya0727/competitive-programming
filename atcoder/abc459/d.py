@@ -60,14 +60,28 @@ for i in range(T):
     else:
         print("No")
         continue
-    t = [""] * ls
-    p = 0
 
-    for s, count in sorted(cnt.items(), key=lambda x: -x[1]):
-        for _ in range(count):
-            t[p] = s
-            p += 2
-            if p >= ls:
-                p = 1
+    if isok:
+        prev = "-"
+
+        t = []
+        while True:
+            maxcnt = 0
+            for j in range(97, 97 + 26):
+                st = chr(j)
+
+                if st == prev:
+                    continue
+
+                if cnt[st] > maxcnt:
+                    maxcnt = cnt[st]
+                    target = st
+
+            if maxcnt > 0:
+                t.append(target)
+                prev = target
+                cnt[target] -= 1
+            else:
+                break
 
     print("".join(t))
