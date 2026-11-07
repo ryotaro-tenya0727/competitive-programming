@@ -44,28 +44,15 @@ def ilist():
 
 
 H, W, N, Q = imap()
-cntr = defaultdict(int)
-cntc = defaultdict(int)
+R = []
+C = []
 
 for i in range(N):
     r, c = imap()
-    r -= 1
-    c -= 1
-    cntr[r] += 1
-    cntc[c] += 1
-
-rkeys = sorted(list(cntr.keys()))
-ckeys = sorted(list(cntc.keys()))
-
-
-def f(d):
-    keys = sorted(list(d.keys()))
-    for i in range(1, len(keys)):
-        d[keys[i]] += d[keys[i - 1]]
-
-
-f(cntr)
-f(cntc)
+    R.append(r)
+    C.append(c)
+R.sort()
+C.sort()
 
 for i in range(Q):
     n = ilist()
@@ -73,28 +60,13 @@ for i in range(Q):
     if n[0] == 1:
         u = n[1]
         d = n[2]
-        u -= 1
-        d -= 1
-        tu = bisect_left(rkeys, u)
-        td = bisect_right(rkeys, d)
-        # print("tu", tu, "td", td, "rkeys[td-1]", rkeys[td - 1], "rkeys[tu-1]",
-        #       rkeys[tu - 1])
-        if td == 0:
-            print(0)
-            continue
-        print(cntr[rkeys[td - 1]] - (0 if tu == 0 else cntr[rkeys[tu - 1]]))
-        # print("cntr[rkeys[td - 1]] ", cntr[rkeys[td - 1]])
-        # print("0 if rkeys[tu] == u else cntr[rkeys[tu - 1]]",
-        #       0 if tu == 0 else cntr[rkeys[tu - 1]])
 
+        ut = bisect_left(R, u)
+        dt = bisect_right(R, d)
+        print(dt - ut)
     else:
         l = n[1]
         r = n[2]
-        l -= 1
-        r -= 1
-        tl = bisect_left(ckeys, l)
-        tr = bisect_right(ckeys, r)
-        if tr == 0:
-            print(0)
-            continue
-        print(cntc[ckeys[tr - 1]] - (0 if tl == 0 else cntc[ckeys[tl - 1]]))
+        lt = bisect_left(C, l)
+        rt = bisect_right(C, r)
+        print(rt - lt)
