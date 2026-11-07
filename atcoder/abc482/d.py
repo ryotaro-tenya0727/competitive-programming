@@ -41,3 +41,7 @@ def imap():
 
 def ilist():
     return list(map(int, input().split()))
+
+
+N = int(input())
+X = ilist()

@@ -41,3 +41,11 @@ def imap():
 
 def ilist():
     return list(map(int, input().split()))
+
+
+S = list(input())
+
+if S.count("o") % 2 == 0:
+    print("even")
+else:
+    print("odd")

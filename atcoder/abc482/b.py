@@ -41,3 +41,36 @@ def imap():
 
 def ilist():
     return list(map(int, input().split()))
+
+
+S = []
+
+for i in range(5):
+    S.append(list(input()))
+ans = 10**15
+for i in range(5):
+    t = 0
+    for j in range(5):
+        if S[i][j] == ".":
+            t += 1
+    ans = min(ans, t)
+
+for i in range(5):
+    t = 0
+    for j in range(5):
+        if S[j][i] == ".":
+            t += 1
+    ans = min(ans, t)
+
+p = 0
+for i in range(5):
+    if S[i][i] == ".":
+        p += 1
+ans = min(ans, p)
+q = 0
+for i in range(5):
+    if S[i][4 - i] == ".":
+        q += 1
+ans = min(ans, q)
+
+print(ans)
