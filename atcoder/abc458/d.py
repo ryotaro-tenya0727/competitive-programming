@@ -52,5 +52,6 @@ for i in range(Q):
     a, b = imap()
     t.add(a)
     t.add(b)
+    p = i + 1
 
-    print(t[(2 * (i + 1) + 1) // 2])
+    print(t[(2 * p + 1) // 2])
