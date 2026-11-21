@@ -45,15 +45,14 @@ def ilist():
 
 Q = int(input())
 
-name_id = {}
-idmax = 0
+s = defaultdict(lambda: "")
+p = 0
 for i in range(Q):
-    s = input()
+    st = input()
 
-    if s in name_id:
-        print(name_id[s])
-        continue
-
-    idmax += 1
-    name_id[s] = idmax
-    print(idmax)
+    if st in s:
+        print(s[st])
+    else:
+        p += 1
+        s[st] = p
+        print(p)
