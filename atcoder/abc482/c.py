@@ -49,24 +49,29 @@ C = []
 
 for i in range(N):
     r, c = imap()
+    r -= 1
+    c -= 1
     R.append(r)
     C.append(c)
 R.sort()
 C.sort()
-
 for i in range(Q):
     n = ilist()
 
     if n[0] == 1:
         u = n[1]
         d = n[2]
+        u -= 1
+        d -= 1
 
-        ut = bisect_left(R, u)
-        dt = bisect_right(R, d)
-        print(dt - ut)
+        right = bisect_right(R, d)
+        left = bisect_left(R, u)
+        print(right - left)
     else:
         l = n[1]
         r = n[2]
-        lt = bisect_left(C, l)
-        rt = bisect_right(C, r)
-        print(rt - lt)
+        l -= 1
+        r -= 1
+        right = bisect_right(C, r)
+        left = bisect_left(C, l)
+        print(right - left)

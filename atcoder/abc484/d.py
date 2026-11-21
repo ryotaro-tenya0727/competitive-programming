@@ -41,3 +41,18 @@ def imap():
 
 def ilist():
     return list(map(int, input().split()))
+
+
+N = int(input())
+A = ilist()
+
+cnt = defaultdict(int)
+ans = 1
+
+for i in range(N):
+    if i > 0 and A[i] != A[i - 1]:
+        ans += i - cnt[A[i]]
+
+    cnt[A[i]] += 1
+
+print(ans)

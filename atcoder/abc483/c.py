@@ -45,31 +45,34 @@ def ilist():
 
 
 N, M = map(int, input().split())
-
-votes = [0] * N
-second = [[] for _ in range(N)]
-
-for _ in range(M):
-    a, b = map(int, input().split())
+vote_second = [[] for i in range(N)]
+cnt_first = [0] * N
+for i in range(M):
+    a, b = imap()
     a -= 1
     b -= 1
-    votes[a] += 1
-    second[a].append(b)
+    cnt_first[a] += 1
+    vote_second[a].append(b)
 
-# 第一希望の得票数が多い上位2人
-top2 = sorted(range(N), key=lambda i: (-votes[i], i))[:2]
+cnt_tup = sorted(enumerate(cnt_first), key=lambda x: (-x[1], x[0]))
+cnt_tup = sorted(cnt_tup, key=lambda x: (-x[1], x[0]))
 
-for k in range(N):
-    # 辞退しない方の上位候補者を選ぶ
-    winner = top2[0] if top2[0] != k else top2[1]
-    best = votes[winner]
+number_1 = cnt_tup[0][0]
+number_2 = cnt_tup[1][0]
 
-    # kが辞退したことで増える票を集計
-    for b, added in Counter(second[k]).items():
-        score = votes[b] + added
+for i in range(N):
+    now = 0
+    if number_1 == i:
+        now = number_2
+    else:
+        now = number_1
+    max_vote = cnt_first[now]
 
-        if score > best or (score == best and b < winner):
-            winner = b
-            best = score
+    for k, v in Counter(vote_second[i]).items():
+        f = cnt_first[k] + v
 
-    print(winner + 1)
+        if f > max_vote or (f == max_vote and k < now):
+            now = k
+            max_vote = f
+
+    print(now + 1)
