@@ -48,23 +48,23 @@ def ilist():
 
 
 N = int(input())
-S = input()
+C = ilist()
 
-# 左からABCが揃う最初の位置
-left = max(S.find(c) for c in "ABC")
+left = [N] * N
+right = [N] * N
 
-# 右からABCが揃う最初の位置
-right = min(S.rfind(c) for c in "ABC")
+for i in range(1, N):
+    if C[i] != C[i - 1]:
+        left[i] = 1
+    else:
+        left[i] = left[i - 1] + 1
 
-# 中央の区間だけ取り出す
-T = S[left + 1:right]
+for i in range(N - 2, -1, -1):
+    if C[i] != C[i + 1]:
+        right[i] = 1
+    else:
+        right[i] = right[i + 1] + 1
 
-last = {"A": -1, "B": -1, "C": -1}
+ans = [min(left[i], right[i]) for i in range(N)]
 
-ans = 0
-
-for i, c in enumerate(T):
-    last[c] = i
-    ans += min(last.values()) + 1
-
-print(ans)
+print(*ans)
