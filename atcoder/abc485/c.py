@@ -50,21 +50,20 @@ def ilist():
 N = int(input())
 C = ilist()
 
-left = [N] * N
-right = [N] * N
+left = [N for i in range(N)]
+right = [N for i in range(N)]
 
 for i in range(1, N):
-    if C[i] != C[i - 1]:
-        left[i] = 1
-    else:
+    if C[i] == C[i - 1]:
         left[i] = left[i - 1] + 1
+    else:
+        left[i] = 1
 
 for i in range(N - 2, -1, -1):
-    if C[i] != C[i + 1]:
-        right[i] = 1
-    else:
+    if C[i] == C[i + 1]:
         right[i] = right[i + 1] + 1
+    else:
+        right[i] = 1
 
 ans = [min(left[i], right[i]) for i in range(N)]
-
 print(*ans)
