@@ -48,34 +48,23 @@ def ilist():
 
 
 N = int(input())
-C = ilist()
+S = input()
 
+# 左からABCが揃う最初の位置
+left = max(S.find(c) for c in "ABC")
 
-def run_length_encode(values: Iterable[T]) -> list[tuple[T, int]]:
-    return [(value, len(list(group))) for value, group in groupby(values)]
+# 右からABCが揃う最初の位置
+right = min(S.rfind(c) for c in "ABC")
 
+# 中央の区間だけ取り出す
+T = S[left + 1:right]
 
-C = run_length_encode(C)
+last = {"A": -1, "B": -1, "C": -1}
 
-lc = len(C)
-ans = []
-for i in range(lc):
-    if i == 0:
-        for j in range(C[i][1], 0, -1):
-            ans.append(j)
-    elif i == lc - 1:
-        for j in range(1, C[i][1] + 1):
-            ans.append(j)
-    else:
-        if C[i][1] % 2 == 0:
-            for j in range(1, (C[i][1] // 2) + 1):
-                ans.append(j)
-            for j in range((C[i][1] // 2), 0, -1):
-                ans.append(j)
-        else:
+ans = 0
 
-            for j in range(1, ((C[i][1] + 1) // 2) + 1):
-                ans.append(j)
-            for j in range((C[i][1] // 2), 0, -1):
-                ans.append(j)
-print(*ans)
+for i, c in enumerate(T):
+    last[c] = i
+    ans += min(last.values()) + 1
+
+print(ans)
